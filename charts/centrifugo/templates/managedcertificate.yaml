@@ -1,0 +1,11 @@
+{{- if .Values.backendconfig.enabled -}}
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: {{ include "centrifugo.fullname" . }}
+spec:
+  domains:
+    {{- with .Values.managedcertificate.domains }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

@@ -60,6 +60,25 @@ grpcService:
   # nodePort: 30102
   annotations: {}
 
+backendconfig:
+  enabled: false
+
+  # Maximum duration websocket connections can stay open.
+  # https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#timeout
+  timeoutSec: 86400
+
+  # For SockJS connections not using websockets, session affinity is required so the
+  # client always gets forwarded to the same Centrifugo node.
+  # https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#session_affinity
+  sessionAffinity:
+    enabled: false
+    affinityType: "GENERATED_COOKIE"
+    affinityCookieTtlSec: 3600
+
+managedcertificate:
+  enabled: false
+  domains: []
+
 ingress:
   enabled: false
   annotations: {}
@@ -162,22 +181,6 @@ affinity: {}
 
 # Additional environment variables to be passed to Centrifugo container.
 env: {}
-
-# Centrifugo configuration, will be transformed into config.json file.
-config:
-  # Engine to use. Default memory engine allows running only one Centrifugo pod.
-  # Scale to many pods with Redis engine or Nats broker. Refer to Centrifugo
-  # documentation: https://centrifugal.github.io/centrifugo/server/engines/
-  engine: "memory"
-
-  # Use offset protocol field.
-  v3_use_offset: true
-
-  # Enable admin web interface by default.
-  admin: true
-
-  # Array of namespaces.
-  namespaces: []
 
 # existingSecret: my-secret
 
