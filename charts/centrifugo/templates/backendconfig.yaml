@@ -1,0 +1,18 @@
+{{- if .Values.backendconfig.enabled -}}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ include "centrifugo.fullname" . }}-backendconfig
+spec:
+  healthCheck:
+    checkIntervalSec: 15
+    port: {{ .Values.internalService.port }}
+    type: HTTP
+    requestPath: /health
+  timeoutSec: {{ .Values.backendconfig.timeoutSec }}
+  {{- if .Values.backendconfig.sessionAffinity.enabled }}
+  sessionAffinity:
+    affinityType: {{ .Values.backendconfig.sessionAffinity.affinityType }}
+    affinityCookieTtlSec: {{ .Values.backendconfig.sessionAffinity.affinityCookieTtlSec }}
+  {{- end }}
+{{- end }}

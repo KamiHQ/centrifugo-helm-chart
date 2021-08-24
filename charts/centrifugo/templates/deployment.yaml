@@ -19,7 +19,6 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
@@ -35,10 +34,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
-      volumes:
-        - name: {{ include "centrifugo.fullname" . }}-config
-          configMap:
-            name: {{ include "centrifugo.fullname" . }}-config  
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -54,9 +49,6 @@ spec:
             - "{{ .Values.service.port }}"
             - --internal_port
             - "{{ .Values.internalService.port }}"
-            - --grpc_api
-            - --grpc_api_port
-            - "{{ .Values.grpcService.port }}"
           env:
             - name: CENTRIFUGO_ADMIN_PASSWORD
               valueFrom:
@@ -89,19 +81,12 @@ spec:
                   name: {{ include "centrifugo.secretName" . }}
                   key: grpc_api_key
             {{- end }}
-            {{- if .Values.secrets.redisUrl }}
-            - name: CENTRIFUGO_REDIS_URL
+            {{- if .Values.secrets.redisAddress }}
+            - name: CENTRIFUGO_REDIS_ADDRESS
               valueFrom:
                 secretKeyRef:
                   name: {{ include "centrifugo.secretName" . }}
-                  key: redis_url
-            {{- end }}
-            {{- if .Values.secrets.redisPassword }}
-            - name: CENTRIFUGO_REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "centrifugo.secretName" . }}
-                  key: redis_password
+                  key: redis_address
             {{- end }}
             {{- if .Values.secrets.redisSentinelPassword }}
             - name: CENTRIFUGO_REDIS_SENTINEL_PASSWORD
@@ -121,10 +106,6 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
-          volumeMounts:
-            - name: "{{ include "centrifugo.fullname" . }}-config"
-              mountPath: "/centrifugo"
-              readOnly: true
           ports:
             - name: external
               containerPort: {{ .Values.service.port }}

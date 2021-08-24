@@ -13,10 +13,14 @@ metadata:
   namespace: {{ $namespace }}
   labels:
     {{- include "centrifugo.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+    networking.gke.io/managed-certificates: {{ include "centrifugo.fullname" . }}
+    {{ if .Values.managedcertificate.enabled -}}
+    kubernetes.io/ingress.class: "gce"
+    {{- end }}
+    {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   {{- if .Values.ingress.tls }}
   tls:
