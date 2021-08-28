@@ -90,6 +90,13 @@ spec:
                   name: {{ include "centrifugo.secretName" . }}
                   key: redis_address
             {{- end }}
+            {{- if .Values.secrets.redisCertificateAuthorities }}
+            - name: REDIS_CERTIFICATE_AUTHORITIES
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "centrifugo.secretName" . }}
+                  key: redis_certificate_authorities
+            {{- end }}
             {{- if .Values.secrets.redisSentinelPassword }}
             - name: CENTRIFUGO_REDIS_SENTINEL_PASSWORD
               valueFrom:
