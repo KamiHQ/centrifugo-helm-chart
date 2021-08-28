@@ -94,11 +94,6 @@ ingress:
     # - host: centrifugo-with-prefix.local
     #   paths:
     #     - /test(/|$)(.*)
-  # https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
-  tls: []
-    # - secretName: centrifugo-example-tls
-    #   hosts:
-    #     - centrifugo.local
 
 resources: {}
 
