@@ -40,8 +40,10 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ include "centrifugo.image" .}}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.image.command }}
           command:
-            - centrifugo
+            - {{ .Values.image.command }}
+          {{- end }}
           args:
             - --health
             - --prometheus
