@@ -22,6 +22,11 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  defaultBackend:
+    service:
+      name: {{ $fullName }}
+      port:
+        number: {{ $svcPort }}
   rules:
     {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
@@ -37,4 +42,4 @@ spec:
                   number: {{ $svcPort }}
           {{- end }}
     {{- end }}
-  {{- end }}
+{{- end }}
