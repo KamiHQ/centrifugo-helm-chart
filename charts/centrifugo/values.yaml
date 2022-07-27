@@ -88,13 +88,6 @@ ingress:
     #
     # To run on custom path:
     # nginx.ingress.kubernetes.io/rewrite-target: /$2
-  hosts: []
-    # - host: centrifugo.local
-    #   paths:
-    #     - /
-    # - host: centrifugo-with-prefix.local
-    #   paths:
-    #     - /test(/|$)(.*)
 
 resources: {}
 

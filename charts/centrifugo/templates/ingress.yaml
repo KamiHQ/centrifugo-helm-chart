@@ -27,19 +27,4 @@ spec:
       name: {{ $fullName }}
       port:
         number: {{ $svcPort }}
-  rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
-        paths:
-          {{- range .paths }}
-          - path: {{ . }}
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {{ $fullName }}
-                port: 
-                  number: {{ $svcPort }}
-          {{- end }}
-    {{- end }}
 {{- end }}
