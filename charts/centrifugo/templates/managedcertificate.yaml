@@ -1,4 +1,4 @@
-{{- if .Values.backendconfig.enabled -}}
+{{- if .Values.managedcertificate.enabled -}}
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
