@@ -15,7 +15,7 @@ metadata:
     {{- include "centrifugo.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/ingress.class: "gce"
-    {{- if .Values.managedcertificate.enabled -}}
+    {{- if .Values.managedcertificate.enabled }}
     networking.gke.io/managed-certificates: {{ include "centrifugo.fullname" . }}
     {{- end }}
     {{- with .Values.ingress.annotations }}
