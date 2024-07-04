@@ -4,6 +4,9 @@ kind: BackendConfig
 metadata:
   name: {{ include "centrifugo.fullname" . }}-backendconfig
 spec:
+  customResponseHeaders:
+    headers:
+    - "Strict-Transport-Security: max-age=15724800; includeSubDomains"
   healthCheck:
     checkIntervalSec: 15
     port: {{ .Values.internalService.port }}
