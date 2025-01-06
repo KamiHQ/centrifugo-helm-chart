@@ -1,0 +1,7 @@
+{{- if .Values.serviceExport.enabled -}}
+kind: ServiceExport
+apiVersion: net.gke.io/v1
+metadata:
+  name: {{ include "centrifugo.fullname" . }}
+  namespace: {{ include "centrifugo.namespace" . }}
+{{end}}
